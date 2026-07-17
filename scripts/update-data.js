@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const API_KEY = "TA_CLE_NEWSAPI";
+const API_KEY = "f282896cc09d42f8be3f398008d95c0c";
 
 async function getNews(query) {
   const url =
