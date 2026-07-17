@@ -7,6 +7,7 @@
 <title>Macro Intelligence Platform</title>
 
 <style>
+
 body{
     background:#0f172a;
     color:white;
@@ -49,6 +50,11 @@ a:hover{
 .green{
     color:#22c55e;
 }
+
+.red{
+    color:#ef4444;
+}
+
 </style>
 
 </head>
@@ -75,7 +81,7 @@ document.getElementById("dashboard").innerHTML = `
 
 <div class="card">
 <h2>📅 Dernière mise à jour</h2>
-${data.lastUpdate}
+<p>${data.lastUpdate}</p>
 </div>
 
 <div class="grid">
@@ -93,7 +99,7 @@ ${data.lastUpdate}
 </div>
 
 <div class="card">
-<h2>🥇 Gold</h2>
+<h2>🥇 Or</h2>
 <h1>$${data.commodities.gold.price}</h1>
 <p class="green">${data.commodities.gold.change}%</p>
 </div>
@@ -105,10 +111,26 @@ ${data.lastUpdate}
 
 </div>
 
+<div class="grid">
+
+<div class="card">
+<h2>📈 S&P 500</h2>
+<h1>${data.markets?.sp500?.price || 0}</h1>
+<p class="green">${data.markets?.sp500?.change || 0}%</p>
+</div>
+
+<div class="card">
+<h2>📈 Nasdaq</h2>
+<h1>${data.markets?.nasdaq?.price || 0}</h1>
+<p class="green">${data.markets?.nasdaq?.change || 0}%</p>
+</div>
+
+</div>
+
 <div class="card">
 <h2>🇺🇸 États-Unis</h2>
 
-${data.usa.map(item => `
+${(data.usa || []).map(item => `
 <p>
 ${item.url}
 ${item.title}
@@ -121,7 +143,7 @@ ${item.title}
 <div class="card">
 <h2>🇨🇳 Chine</h2>
 
-${data.china.map(item => `
+${(data.china || []).map(item => `
 <p>
 ${item.url}
 ${item.title}
@@ -136,8 +158,7 @@ ${item.title}
 
 ${(data.geopolitics || []).map(item => `
 <p>
-${item.url}
-${item.title}
+<a href="${itemtem.title}
 </a>
 </p>
 `).join("")}
@@ -159,4 +180,5 @@ console.error(error);
 </script>
 
 </body>
+
 </html>
