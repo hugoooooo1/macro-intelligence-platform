@@ -1,0 +1,28 @@
+name: Daily Update
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: node scripts/update-data.js
+
+      - name: Commit changes
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email actions@github.com
+
+          git add data.json
+          git commit -m "Update dashboard" || exit 0
+          git push
