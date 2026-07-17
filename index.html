@@ -131,11 +131,13 @@ document.getElementById("dashboard").innerHTML = `
 <h2>🇺🇸 États-Unis</h2>
 
 ${(data.usa || []).map(item => `
-<p>
-${item.url}
-${item.title}
-</a>
-</p>
+<div class="news-card">
+    <h3>${item.title}</h3>
+    <p>Source : ${item.source || "Unknown"}</p>
+    item.url}" target="_blank">
+        Lire l'article →
+    </a>
+</div>
 `).join("")}
 
 </div>
