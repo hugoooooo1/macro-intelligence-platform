@@ -1,0 +1,34 @@
+{
+  "lastUpdate": "17/07/2026 06:00",
+
+  "riskScore": 7,
+
+  "commodities": {
+    "brent": {
+      "price": 84.3,
+      "change": 1.4
+    },
+    "wti": {
+      "price": 81.1,
+      "change": 1.1
+    },
+    "gold": {
+      "price": 3350,
+      "change": 0.4
+    }
+  },
+
+  "usa": [
+    {
+      "title": "US inflation remains under scrutiny",
+      "url": "https://www.reuters.com"
+    }
+  ],
+
+  "china": [
+    {
+      "title": "China announces industrial stimulus",
+      "url": "https://www.reuters.com"
+    }
+  ]
+}
