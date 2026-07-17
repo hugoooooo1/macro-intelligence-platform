@@ -1,11 +1,12 @@
 const fs = require("fs");
 
-const API_KEY = "f282896cc09d42f8be3f398008d95c0c";
+const NEWS_API_KEY = "TA_CLE_NEWSAPI";
+const FMP_API_KEY = "TA_CLE_FMP";
 
 async function getNews(query) {
 
   const response = await fetch(
-    `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&pageSize=5&sortBy=publishedAt&apiKey=${API_KEY}`
+    `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&pageSize=5&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`
   );
 
   const data = await response.json();
@@ -15,8 +16,19 @@ async function getNews(query) {
   return data.articles.map(article => ({
     title: article.title,
     url: article.url,
-    source: article.source?.name || "Unknown"
+    source: article.source?.name || ""
   }));
+}
+
+async function getQuote(symbol) {
+
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${FMP_API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data[0];
 }
 
 async function updateDashboard() {
@@ -29,6 +41,9 @@ async function updateDashboard() {
     "Middle East OR Taiwan OR Ukraine"
   );
 
+  const sp500 = await getQuote("%5EGSPC");
+  const nasdaq = await getQuote("%5EIXIC");
+
   const dashboard = {
 
     lastUpdate:
@@ -37,7 +52,6 @@ async function updateDashboard() {
     riskScore: 7,
 
     commodities: {
-
       brent: {
         price: 84.3,
         change: 1.4
@@ -54,9 +68,24 @@ async function updateDashboard() {
       }
     },
 
+    markets: {
+
+      sp500: {
+        price: sp500?.price || 0,
+        change: sp500?.changesPercentage || 0
+      },
+
+      nasdaq: {
+        price: nasdaq?.price || 0,
+        change: nasdaq?.changesPercentage || 0
+      }
+
+    },
+
     usa,
     china,
     geopolitics
+
   };
 
   fs.writeFileSync(
