@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
 body{
     background:#0f172a;
     color:white;
-    font-family:Arial;
+    font-family:Arial,sans-serif;
     margin:0;
     padding:30px;
 }
@@ -28,7 +29,7 @@ body{
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:20px;
 }
 
@@ -36,15 +37,22 @@ h1{
     color:#60a5fa;
 }
 
+a{
+    color:#60a5fa;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
 .green{
     color:#22c55e;
 }
-
-.red{
-    color:#ef4444;
-}
 </style>
+
 </head>
+
 <body>
 
 <div class="container">
@@ -59,11 +67,11 @@ Chargement...
 
 <script>
 
-fetch('./data.json')
+fetch("./data.json")
 .then(r => r.json())
 .then(data => {
 
-document.getElementById('dashboard').innerHTML = `
+document.getElementById("dashboard").innerHTML = `
 
 <div class="card">
 <h2>📅 Dernière mise à jour</h2>
@@ -98,31 +106,53 @@ ${data.lastUpdate}
 </div>
 
 <div class="card">
-<h2>🇺🇸 USA</h2>
-${
-data.usa.map(item => `
+<h2>🇺🇸 États-Unis</h2>
+
+${data.usa.map(item => `
 <p>
 ${item.url}
 ${item.title}
 </a>
 </p>
-`).join('')
-}
+`).join("")}
+
 </div>
 
 <div class="card">
 <h2>🇨🇳 Chine</h2>
-${
-data.china.map(item => `
+
+${data.china.map(item => `
 <p>
-<a href="${item.urltitle}
+${item.url}
+${item.title}
 </a>
 </p>
-`).join('')
-}
+`).join("")}
+
+</div>
+
+<div class="card">
+<h2>🌍 Géopolitique</h2>
+
+${(data.geopolitics || []).map(item => `
+<p>
+${item.url}
+${item.title}
+</a>
+</p>
+`).join("")}
+
 </div>
 
 `;
+
+})
+.catch(error => {
+
+document.getElementById("dashboard").innerHTML =
+"<h2>Erreur de chargement des données</h2>";
+
+console.error(error);
 
 });
 
