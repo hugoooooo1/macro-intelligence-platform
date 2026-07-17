@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macro Intelligence Platform</title>
+
+<style>
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial;
+    margin:0;
+    padding:30px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+h1{
+    color:#60a5fa;
+}
+
+.green{
+    color:#22c55e;
+}
+
+.red{
+    color:#ef4444;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>📈 Macro Intelligence Platform</h1>
+
+<div id="dashboard">
+Chargement...
+</div>
+
+</div>
+
+<script>
+
+fetch('./data.json')
+.then(r => r.json())
+.then(data => {
+
+document.getElementById('dashboard').innerHTML = `
+
+<div class="card">
+<h2>📅 Dernière mise à jour</h2>
+${data.lastUpdate}
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h2>🛢️ Brent</h2>
+<h1>$${data.commodities.brent.price}</h1>
+<p class="green">${data.commodities.brent.change}%</p>
+</div>
+
+<div class="card">
+<h2>🛢️ WTI</h2>
+<h1>$${data.commodities.wti.price}</h1>
+<p class="green">${data.commodities.wti.change}%</p>
+</div>
+
+<div class="card">
+<h2>🥇 Gold</h2>
+<h1>$${data.commodities.gold.price}</h1>
+<p class="green">${data.commodities.gold.change}%</p>
+</div>
+
+<div class="card">
+<h2>⚠️ Risk Score</h2>
+<h1>${data.riskScore}/10</h1>
+</div>
+
+</div>
+
+<div class="card">
+<h2>🇺🇸 USA</h2>
+${
+data.usa.map(item => `
+<p>
+${item.url}
+${item.title}
+</a>
+</p>
+`).join('')
+}
+</div>
+
+<div class="card">
+<h2>🇨🇳 Chine</h2>
+${
+data.china.map(item => `
+<p>
+<a href="${item.urltitle}
+</a>
+</p>
+`).join('')
+}
+</div>
+
+`;
+
+});
+
+</script>
+
+</body>
+</html>
