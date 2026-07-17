@@ -1,99 +1,158 @@
-const fs = require("fs");
+{
+  "lastUpdate": "17/07/2026 06:00",
 
-const NEWS_API_KEY = "TA_CLE_NEWSAPI";
-const FMP_API_KEY = "TA_CLE_FMP";
+  "riskScore": {
+    "global": 7,
+    "macro": 8,
+    "energy": 7,
+    "china": 6,
+    "markets": 5
+  },
 
-async function getNews(query) {
+  "summary": [
+    "Brent en hausse de 1.4%",
+    "Nasdaq positif avant l'ouverture",
+    "Nouvelle mesure de soutien économique en Chine",
+    "Tensions géopolitiques persistantes",
+    "Sentiment global légèrement positif"
+  ],
 
-  const response = await fetch(
-    `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&pageSize=5&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`
-  );
+  "commodities": {
 
-  const data = await response.json();
-
-  if (!data.articles) return [];
-
-  return data.articles.map(article => ({
-    title: article.title,
-    url: article.url,
-    source: article.source?.name || ""
-  }));
-}
-
-async function getQuote(symbol) {
-
-  const response = await fetch(
-    `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${FMP_API_KEY}`
-  );
-
-  const data = await response.json();
-
-  return data[0];
-}
-
-async function updateDashboard() {
-
-  const usa = await getNews("US economy");
-
-  const china = await getNews("China economy");
-
-  const geopolitics = await getNews(
-    "Middle East OR Taiwan OR Ukraine"
-  );
-
-  const sp500 = await getQuote("%5EGSPC");
-  const nasdaq = await getQuote("%5EIXIC");
-
-  const dashboard = {
-
-    lastUpdate:
-      new Date().toLocaleString("fr-FR"),
-
-    riskScore: 7,
-
-    commodities: {
-      brent: {
-        price: 84.3,
-        change: 1.4
-      },
-
-      wti: {
-        price: 81.1,
-        change: 1.1
-      },
-
-      gold: {
-        price: 3350,
-        change: 0.4
-      }
+    "brent": {
+      "price": 84.3,
+      "change": 1.4
     },
 
-    markets: {
-
-      sp500: {
-        price: sp500?.price || 0,
-        change: sp500?.changesPercentage || 0
-      },
-
-      nasdaq: {
-        price: nasdaq?.price || 0,
-        change: nasdaq?.changesPercentage || 0
-      }
-
+    "wti": {
+      "price": 81.1,
+      "change": 1.1
     },
 
-    usa,
-    china,
-    geopolitics
+    "gold": {
+      "price": 3350,
+      "change": 0.4
+    },
 
-  };
+    "silver": {
+      "price": 38.5,
+      "change": 0.2
+    },
 
-  fs.writeFileSync(
-    "data.json",
-    JSON.stringify(dashboard, null, 2)
-  );
+    "naturalGas": {
+      "price": 3.45,
+      "change": -0.3
+    }
 
-  console.log("Dashboard updated");
+  },
+
+  "markets": {
+
+    "sp500": {
+      "price": 6280,
+      "change": 0.5
+    },
+
+    "nasdaq": {
+      "price": 22950,
+      "change": 0.8
+    },
+
+    "dow": {
+      "price": 44900,
+      "change": 0.3
+    },
+
+    "nikkei": {
+      "price": 41800,
+      "change": 1.1
+    },
+
+    "hangSeng": {
+      "price": 24800,
+      "change": -0.2
+    },
+
+    "shanghai": {
+      "price": 3580,
+      "change": 0.6
+    }
+  },
+
+  "forex": {
+
+    "eurusd": {
+      "price": 1.17,
+      "change": 0.1
+    },
+
+    "usdcny": {
+      "price": 7.15,
+      "change": -0.2
+    },
+
+    "usdjpy": {
+      "price": 151.8,
+      "change": 0.3
+    }
+  },
+
+  "usa": [
+    {
+      "title": "US inflation remains under scrutiny",
+      "url": "https://www.reuters.com",
+      "source": "Reuters"
+    },
+    {
+      "title": "Fed officials maintain cautious stance",
+      "url": "https://www.cnbc.com",
+      "source": "CNBC"
+    }
+  ],
+
+  "china": [
+    {
+      "title": "China announces industrial stimulus",
+      "url": "https://www.reuters.com",
+      "source": "Reuters"
+    },
+    {
+      "title": "Manufacturing activity improves",
+      "url": "https://www.cnbc.com",
+      "source": "CNBC"
+    }
+  ],
+
+  "geopolitics": [
+    {
+      "title": "Middle East tensions continue",
+      "url": "https://www.reuters.com/world/"
+    },
+    {
+      "title": "Taiwan situation monitored by markets",
+      "url": "https://www.reuters.com/world/"
+    }
+  ],
+
+  "calendar": [
+    {
+      "time": "14:30",
+      "event": "US CPI"
+    },
+    {
+      "time": "16:00",
+      "event": "EIA Crude Oil Inventories"
+    },
+    {
+      "time": "20:00",
+      "event": "Federal Reserve Speech"
+    }
+  ],
+
+  "alerts": [
+    {
+      "level": "medium",
+      "message": "Brent up more than 1% during Asian session"
+    }
+  ]
 }
-
-updateDashboard();
