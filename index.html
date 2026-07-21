@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Macro Intelligence Platform</title>
 
 <style>
@@ -30,21 +31,16 @@ body{
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 }
 
 h1{
     color:#60a5fa;
 }
 
-a{
-    color:#60a5fa;
-    text-decoration:none;
-}
-
-a:hover{
-    text-decoration:underline;
+h2{
+    margin-top:0;
 }
 
 .green{
@@ -53,6 +49,43 @@ a:hover{
 
 .red{
     color:#ef4444;
+}
+
+.news-card{
+    background:#0f172a;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    border-left:4px solid #60a5fa;
+}
+
+.news-card h3{
+    margin-top:0;
+    font-size:18px;
+}
+
+.news-card p{
+    color:#94a3b8;
+}
+
+.news-card a{
+    color:#60a5fa;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.news-card a:hover{
+    text-decoration:underline;
+}
+
+.metric{
+    font-size:38px;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+.section-title{
+    margin-bottom:20px;
 }
 
 </style>
@@ -66,7 +99,7 @@ a:hover{
 <h1>📈 Macro Intelligence Platform</h1>
 
 <div id="dashboard">
-Chargement
+Chargement...
 </div>
 
 </div>
@@ -74,7 +107,7 @@ Chargement
 <script>
 
 fetch("./data.json")
-.then(r => r.json())
+.then(response => response.json())
 .then(data => {
 
 document.getElementById("dashboard").innerHTML = `
@@ -88,25 +121,26 @@ document.getElementById("dashboard").innerHTML = `
 
 <div class="card">
 <h2>🛢️ Brent</h2>
-<h1>$${data.commodities.brent.price}</h1>
+<div class="metric">$${data.commodities.brent.price}</div>
 <p class="green">${data.commodities.brent.change}%</p>
 </div>
 
 <div class="card">
 <h2>🛢️ WTI</h2>
-<h1>$${data.commodities.wti.price}</h1>
+<div class="metric">$${data.commodities.wti.price}</div>
 <p class="green">${data.commodities.wti.change}%</p>
 </div>
 
 <div class="card">
 <h2>🥇 Or</h2>
-<h1>$${data.commodities.gold.price}</h1>
+<div class="metric">$${data.commodities.gold.price}</div>
 <p class="green">${data.commodities.gold.change}%</p>
 </div>
 
 <div class="card">
 <h2>⚠️ Risk Score</h2>
-<h1>${data.riskScore}/10</h1>
+<div class="metric">${data.riskScore.global}</div>
+<p>Global Risk</p>
 </div>
 
 </div>
@@ -115,54 +149,81 @@ document.getElementById("dashboard").innerHTML = `
 
 <div class="card">
 <h2>📈 S&P 500</h2>
-<h1>${data.markets?.sp500?.price || 0}</h1>
-<p class="green">${data.markets?.sp500?.change || 0}%</p>
+<div class="metric">${data.markets.sp500.price}</div>
+<p class="green">${data.markets.sp500.change}%</p>
 </div>
 
 <div class="card">
 <h2>📈 Nasdaq</h2>
-<h1>${data.markets?.nasdaq?.price || 0}</h1>
-<p class="green">${data.markets?.nasdaq?.change || 0}%</p>
+<div class="metric">${data.markets.nasdaq.price}</div>
+<p class="green">${data.markets.nasdaq.change}%</p>
+</div>
+
+<div class="card">
+<h2>📈 Dow Jones</h2>
+<div class="metric">${data.markets.dow.price}</div>
+<p class="green">${data.markets.dow.change}%</p>
 </div>
 
 </div>
 
 <div class="card">
-<h2>🇺🇸 États-Unis</h2>
 
-${(data.usa || []).map(item => `
+<h2 class="section-title">🇺🇸 États-Unis</h2>
+
+${(data.usa || []).map(article => `
 <div class="news-card">
-    <h3>${item.title}</h3>
-    <p>Source : ${item.source || "Unknown"}</p>
-    item.url}" target="_blank">
-        Lire l'article →
-    </a>
+<h3>${article.title}</h3>
+
+<p>
+Source :
+${article.source || "Reuters"}
+</p>
+
+${article.url}
+Lire l'article →
+</a>
+
 </div>
 `).join("")}
 
 </div>
 
 <div class="card">
-<h2>🇨🇳 Chine</h2>
 
-${(data.china || []).map(item => `
+<h2 class="section-title">🇨🇳 Chine</h2>
+
+${(data.china || []).map(article => `
+<div class="news-card">
+<h3>${article.title}</h3>
+
 <p>
-${item.url}
-${item.title}
-</a>
+Source :
+${article.source || "Reuters"}
 </p>
+
+<a hrefle.url}
+Lire l'article →
+</a>
+
+</div>
 `).join("")}
 
 </div>
 
 <div class="card">
-<h2>🌍 Géopolitique</h2>
 
-${(data.geopolitics || []).map(item => `
-<p>
-<a href="${itemtem.title}
+<h2 class="section-title">🌍 Géopolitique</h2>
+
+${(data.geopolitics || []).map(article => `
+<div class="news-card">
+<h3>${article.title}</h3>
+
+<aarticle.url}
+Lire l'article →
 </a>
-</p>
+
+</div>
 `).join("")}
 
 </div>
@@ -172,8 +233,12 @@ ${(data.geopolitics || []).map(item => `
 })
 .catch(error => {
 
-document.getElementById("dashboard").innerHTML =
-"<h2>Erreur de chargement des données</h2>";
+document.getElementById("dashboard").innerHTML = `
+<div class="card">
+<h2>❌ Erreur</h2>
+<p>Impossible de charger data.json</p>
+</div>
+`;
 
 console.error(error);
 
@@ -182,5 +247,4 @@ console.error(error);
 </script>
 
 </body>
-
 </html>
